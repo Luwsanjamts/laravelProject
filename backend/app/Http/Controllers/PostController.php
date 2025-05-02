@@ -23,10 +23,44 @@ class PostController extends Controller
         $post->title=$validated['title'];
         $post->description=$validated['description'];
         $post->user_id=$user->id;
-        $post-save();
+        $post->save();
 
         $result['status']='success';
         $result['message']='post created';
         return $result;
+    }
+    public function GetMyPost(Request $req){
+        $user=Auth::guard('api')->user();
+        if(!$user){
+            $result['status']='post oruulagvi bna';
+            $result['message']='bhgvv bna';
+            return $result;
+        }
+        $post=Post::where('user_id','=',$user->id)->get();
+        $result['status']='success';
+        $result['data']=$post;
+        return $result;
+    }
+    public function Uppost(Request $req){
+        $user=Auth::guard('api')->user();
+        if(!$user){
+            $result['status']='oldsongvi';
+            $result['message']='bhgvi bna';
+            return $result;
+        }
+        $foundPost=Post::find($req->postId);
+        if($foundPost){
+            $result['status']='oldsongvi';
+            $result['message']='post not found';
+            return $result;
+        }
+        $foundPost->update([
+            'title'=>$req->title,
+            'description'=>$req->description,
+        ]);
+        $result['status']='success';
+        $result['data']=$foundpost;
+        return $foundPost;
+
     }
 }

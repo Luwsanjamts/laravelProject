@@ -23,3 +23,5 @@ Route::post('/user/sign-up',[UserController::class,'signUp']);
 
 Route::post('/user/login',[UserController::class,'login']);
 Route::middleware('auth:sanctum')->post('/user/add-post',[PostController::class,'addPost']);
+Route::middleware('auth:sanctum')->get('/user/getPost',[PostController::class,'GetMyPost']);
+Route::middleware('auth:sanctum')->post('/user/Uppost',[PostController::class,'Uppost']);
